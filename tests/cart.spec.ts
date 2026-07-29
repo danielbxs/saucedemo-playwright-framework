@@ -1,0 +1,29 @@
+import { test, expect } from "@playwright/test";
+import { PageManager } from "../pages/PageManager";
+
+test.describe("Cart Functionality", () => {
+  let pm: PageManager;
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/inventory.html");
+    pm = new PageManager(page);
+    await pm.onInventoryPage().addProductToCartByName("Sauce Labs Backpack");
+    await pm.onInventoryPage().addProductToCartByName("Sauce Labs Onesie");
+    await pm.onInventoryPage().goToCart();
+  });
+
+  test("should contain the correct items added to the cart", async () => {
+    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Backpack")).toBeVisible();
+    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Onesie")).toBeVisible();
+  });
+
+  test("should remove item from cart when remove button is clicked", async () => {
+    await pm.onCartPage().removeProductFromCartByName("Sauce Labs Onesie");
+    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Onesie")).not.toBeVisible();
+  });
+
+  test("should be empty when all items are removed", async () => {
+    await pm.onCartPage().removeProductFromCartByName("Sauce Labs Backpack");
+    await pm.onCartPage().removeProductFromCartByName("Sauce Labs Onesie");
+    await expect(pm.onCartPage().getCartItems()).toHaveCount(0);
+  });
+});
