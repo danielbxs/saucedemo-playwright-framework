@@ -1,0 +1,62 @@
+import { Page, Locator } from "@playwright/test";
+type ProductName =
+  | "Sauce Labs Backpack"
+  | "Sauce Labs Bike Light"
+  | "Sauce Labs Bolt T-Shirt"
+  | "Sauce Labs Fleece Jacket"
+  | "Sauce Labs Onesie"
+  | "Test.allTheThings() T-Shirt (Red)";
+
+export class CartPage {
+  readonly page: Page;
+  readonly productList: Locator;
+  readonly checkoutButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.productList = page.getByTestId("cart-list");
+    this.checkoutButton = page.getByRole("button", { name: "Checkout" });
+  }
+
+  /**
+   * Gets a Locator pointing to a specific cart item text node by its product name.
+   * Useful for web-first assertions in spec files.
+   * @param productName Full product display name
+   * @returns Locator for the matching product text inside the cart list
+   */
+  getCartItemByName(productName: ProductName): Locator {
+    return this.page.getByTestId("inventory-item").getByText(productName);
+  }
+
+  /**
+   * Formats a product name into a slug that matches the data-test attribute.
+   * @param productName Full product display name e.g., "Sauce Labs Backpack"
+   * @returns Formatted slug e.g., "sauce-labs-backpack"
+   */
+  private formatProductName(productName: ProductName): string {
+    return productName.toLowerCase().split(" ").join("-");
+  }
+
+  /**
+   * Removes a specific item from the shopping cart by its product name.
+   * @param productName Name of the product to remove from the cart
+   */
+  async removeProductFromCartByName(productName: ProductName) {
+    const productToBeRemoved = this.formatProductName(productName);
+    await this.page.getByTestId(`remove-${productToBeRemoved}`).click();
+  }
+  /**
+  * Returns a list of cart items.
+   @returns a locator with the list of items in the cart
+   */
+  getCartItems() {
+    return this.productList.getByTestId("inventory-item");
+  }
+
+  /**
+   * Clicks the Checkout button to proceed to checkout.
+   */
+  async proceedToCheckout() {
+    await this.checkoutButton.click();
+  }
+}
