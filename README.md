@@ -1,0 +1,96 @@
+[![Playwright Tests](https://github.com/danielbxs/saucedemo-playwright-framework/actions/workflows/playwright.yml/badge.svg)](https://github.com/danielbxs/saucedemo-playwright-framework/actions/workflows/playwright.yml)
+
+# Saucedemo Playwright Automation Framework (Playwright & TypeScript)
+
+This is an automated end-to-end testing suite built with **Playwright** and **TypeScript** using the **Page Object Model (POM)** pattern. This repository validates all functionalities of the e-commerce process and checkout financial calculation accuracy on the [Swag Labs (Saucedemo)](https://www.saucedemo.com/) application.
+
+---
+
+## Technologies Used
+
+- **Framework:** [Playwright Test](https://playwright.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **CI/CD:** GitHub Actions
+
+---
+
+## Test Coverage
+
+This test suite covers the main user flows across the application lifecycle:
+
+- **Authentication (`/`):** Validates login functionality, credential handling, and testing fields against invalid inputs, special characters, and script injection attempts.
+- **Inventory (`/inventory.html`):** Exercises product selection, menu interactions, and application state resets.
+- **Shopping Cart (`/cart.html`):** Tests cart persistence and edge cases like proceeding to checkout with an empty cart.
+- **Checkout Workflows (`/checkout-step-one.html` & `/checkout-step-two.html`):**
+  - Form validation and required field warnings.
+  - Precise verification of subtotal, tax, and order totals.
+- **Order Completion (`/checkout-complete.html`):** Verification of the checkout process completeness, state teardown and redirection to the store front.
+
+---
+
+## Known Issues
+
+This project follows professional QA practices by writing tests against expected specifications. Identified application bugs are actively managed using Playwright's `test.fixme()` status to ensure continuous integration (CI) pipelines stay green while tracking broken features.
+
+| Spec                | Known Issue / Description                                                                                                                                            | Status                    |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ |
+| `inventory.spec.ts` | **Reset App State:** Clears cart badge storage state but fails to re-render "Remove" buttons back to "Add to cart" in the DOM.                                       | 🟡 `Skipped (test.fixme)` |
+| `cart.spec.ts`      | **Empty Cart Checkout:** Allows users to proceed to Checkout Step One with 0 items in the cart without disabling the checkout button or displaying an error message. | 🟡 `Skipped (test.fixme)` |
+
+---
+
+## How to run locally
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
+
+### Installation
+
+1. Clone this repository:
+
+```bash
+git clone https://github.com/danielbxs/saucedemo-playwright-framework.git
+cd saucedemo-playwright-framework
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Install Playwright browsers
+
+```bash
+npx playwright install
+```
+
+## Running tests
+
+1. Run all tests (headless)
+
+```bash
+npx playwright test
+```
+
+2. Run all tests in UI mode
+
+```bash
+npx playwright test --ui
+```
+
+3. Run a specific test file
+
+```bash
+npx playwright test tests/login.spec.ts
+```
+
+4. Generate and view the HTML report
+
+```bash
+npx playwright show-report
+```
