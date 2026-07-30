@@ -42,4 +42,13 @@ test.describe("Inventory Functionality", () => {
     await pm.onInventoryPage().clickMenuOption("About");
     await expect(page).toHaveURL(/.*saucelabs\.com.*/);
   });
+
+  test.fixme("should open side menu and reset app state", async () => {
+    await pm.onInventoryPage().addProductToCartByName("Sauce Labs Bike Light");
+    await pm.onInventoryPage().addProductToCartByName("Sauce Labs Fleece Jacket");
+    await pm.onInventoryPage().clickMenuOption("Reset App State");
+    await expect(pm.onInventoryPage().shoppingCartBadge).not.toBeVisible();
+    await expect(pm.onInventoryPage().getAddToCartButton("Sauce Labs Bike Light")).toHaveText("Add to cart");
+    await expect(pm.onInventoryPage().getAddToCartButton("Sauce Labs Fleece Jacket")).toHaveText("Add to cart");
+  });
 });

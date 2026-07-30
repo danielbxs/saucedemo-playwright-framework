@@ -17,6 +17,9 @@ export class CheckoutPage {
   readonly backHomeButton: Locator;
   readonly generatePdfButton: Locator;
   readonly generatingButton: Locator;
+  readonly subtotalLabel: Locator;
+  readonly taxLabel: Locator;
+  readonly totalLabel: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -35,6 +38,9 @@ export class CheckoutPage {
     this.backHomeButton = page.getByRole("button", { name: "Back Home" });
     this.generatePdfButton = page.getByRole("button", { name: "Generate PDF order" });
     this.generatingButton = page.getByRole("button", { name: "Generating..." });
+    this.subtotalLabel = page.getByTestId("subtotal-label");
+    this.taxLabel = page.getByTestId("tax-label");
+    this.totalLabel = page.getByTestId("total-label");
   }
 
   /**

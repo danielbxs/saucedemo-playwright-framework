@@ -1,7 +1,10 @@
-[
-  { "firstName": "John", "lastName": "Doe", "zipCode": "2139120" },
-  { "firstName": "Mary", "lastName": "Jane", "zipCode": "90210" },
-  { "firstName": "Carl", "lastName": "Johnson", "zipCode": "5912038" },
-  { "firstName": "Jake", "lastName": "Jarmel", "zipCode": "2391055" },
-  { "firstName": "Stacy", "lastName": "James", "zipCode": "4204393" }
-]
+{
+  "validCheckout": [
+    { "firstName": "John", "lastName": "Doe", "zipCode": "2139120" },
+    { "firstName": "Mary", "lastName": "Jane", "zipCode": "90210" },
+    { "firstName": "Carl", "lastName": "Johnson", "zipCode": "5912038" },
+    { "firstName": "Jake", "lastName": "Jarmel", "zipCode": "2391055" },
+    { "firstName": "Stacy", "lastName": "James", "zipCode": "4204393" }
+  ],
+  "singleCheckout": { "firstName": "Mike", "lastName": "Donald", "zipCode": "3729183" }
+}

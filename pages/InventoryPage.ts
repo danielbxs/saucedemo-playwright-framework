@@ -71,6 +71,16 @@ export class InventoryPage {
   }
 
   /**
+   * Selects the "Add to cart" button of a specific product
+   * @param productName Full product display name e.g., "Sauce Labs Backpack"
+   * @returns A locator pointing to the specific product's add to cart button
+   */
+  getAddToCartButton(productName: ProductName) {
+    const product = this.formatProductName(productName);
+    return this.page.getByTestId(`add-to-cart-${product}`);
+  }
+
+  /**
    * Adds a specific item to the shopping cart by its product name.
    * @param productName Name of the product to add to the cart
    */

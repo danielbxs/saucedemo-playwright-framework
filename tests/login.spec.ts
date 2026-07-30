@@ -52,4 +52,13 @@ test.describe("Login Functionality", () => {
     await pm.onLoginPage().closeErrorButton.click();
     await expect(page).toHaveURL("/");
   });
+
+  test("should display an error message when injections are input into login fields", async ({ page }) => {
+    await pm.onLoginPage().logIn(users.injection.username, users.injection.password);
+    await expect(pm.onLoginPage().errorMessage).toBeVisible();
+    await expect(pm.onLoginPage().errorMessage).toHaveText("Epic sadface: Username and password do not match any user in this service");
+    await expect(pm.onLoginPage().closeErrorButton).toBeEnabled();
+    await pm.onLoginPage().closeErrorButton.click();
+    await expect(page).toHaveURL("/");
+  });
 });

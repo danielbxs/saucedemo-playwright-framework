@@ -26,4 +26,10 @@ test.describe("Cart Functionality", () => {
     await pm.onCartPage().removeProductFromCartByName("Sauce Labs Onesie");
     await expect(pm.onCartPage().getCartItems()).toHaveCount(0);
   });
+
+  test.fixme("should not be able to checkout with an empty cart", async ({ page }) => {
+    await pm.onCartPage().proceedToCheckout();
+    await expect(pm.onCartPage().checkoutButton).toBeDisabled();
+    await expect(page).toHaveURL("/cart.html");
+  });
 });

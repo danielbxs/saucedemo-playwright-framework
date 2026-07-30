@@ -13,7 +13,7 @@ test.describe("Checkout Functionality", () => {
     await pm.onInventoryPage().goToCart();
     await pm.onCartPage().proceedToCheckout();
   });
-  checkoutData.forEach(({ firstName, lastName, zipCode }) => {
+  checkoutData.validCheckout.forEach(({ firstName, lastName, zipCode }) => {
     test(`should complete the checkout flow successfully for ${firstName} ${lastName} ${zipCode}`, async ({ page }) => {
       await expect(page).toHaveURL(/.*checkout-step-one.html$/);
       await expect(pm.onCheckoutPage().checkoutTitle).toHaveText("Checkout: Your Information");
@@ -43,5 +43,22 @@ test.describe("Checkout Functionality", () => {
       await expect(pm.onCheckoutPage().closeErrorButton).toBeVisible();
       await pm.onCheckoutPage().closeErrorMessage();
     });
+  });
+
+  test("should accurately calculate subtotal, tax, and total", async ({ page }) => {
+    // TODO: Navigate to checkout step two with items in cart
+    await expect(page).toHaveURL(/.*checkout-step-one.html$/);
+    await expect(pm.onCheckoutPage().checkoutTitle).toHaveText("Checkout: Your Information");
+    await pm
+      .onCheckoutPage()
+      .fillInformation(checkoutData.singleCheckout.firstName, checkoutData.singleCheckout.lastName, checkoutData.singleCheckout.zipCode);
+    await expect(page).toHaveURL(/.*checkout-step-two.html$/);
+    const subtotalText = await pm.onCheckoutPage().subtotalLabel.textContent();
+    const subtotal = parseFloat(subtotalText?.split("$")[1] || "0");
+    const taxText = await pm.onCheckoutPage().taxLabel.textContent();
+    const tax = parseFloat(taxText?.split("$")[1] || "0");
+    const totalText = await pm.onCheckoutPage().totalLabel.textContent();
+    const total = parseFloat(totalText?.split("$")[1] || "0");
+    expect(+(subtotal + tax).toFixed(2)).toBe(total);
   });
 });
