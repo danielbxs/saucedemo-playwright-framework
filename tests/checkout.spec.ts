@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
+import { test as checka11yTest } from "../fixtures/checka11y";
 import checkoutData from "../test-data/checkoutData.json";
 import invalidCheckoutData from "../test-data/invalidCheckoutData.json";
 
@@ -13,6 +14,7 @@ test.describe("Checkout Functionality", () => {
     await pm.onInventoryPage().goToCart();
     await pm.onCartPage().proceedToCheckout();
   });
+
   checkoutData.validCheckout.forEach(({ firstName, lastName, zipCode }) => {
     test(`should complete the checkout flow successfully for ${firstName} ${lastName} ${zipCode}`, async ({ page }) => {
       await expect(page).toHaveURL(/.*checkout-step-one.html$/);
@@ -33,6 +35,7 @@ test.describe("Checkout Functionality", () => {
       await expect(page).toHaveURL(/.*inventory.html$/);
     });
   });
+
   invalidCheckoutData.forEach(({ firstName, lastName, zipCode, errorMessage }) => {
     test(`should display an ${errorMessage} when fillling form with missing data`, async ({ page }) => {
       await expect(page).toHaveURL(/.*checkout-step-one.html$/);
@@ -46,7 +49,6 @@ test.describe("Checkout Functionality", () => {
   });
 
   test("should accurately calculate subtotal, tax, and total", async ({ page }) => {
-    // TODO: Navigate to checkout step two with items in cart
     await expect(page).toHaveURL(/.*checkout-step-one.html$/);
     await expect(pm.onCheckoutPage().checkoutTitle).toHaveText("Checkout: Your Information");
     await pm
@@ -60,5 +62,11 @@ test.describe("Checkout Functionality", () => {
     const totalText = await pm.onCheckoutPage().totalLabel.textContent();
     const total = parseFloat(totalText?.split("$")[1] || "0");
     expect(+(subtotal + tax).toFixed(2)).toBe(total);
+  });
+
+  checka11yTest("should meet forms accessibility guidelines", async ({ page, axe }) => {
+    await expect(page).toHaveURL(/.*checkout-step-one.html$/);
+    const pageOneResults = await axe({ extraTags: ["cat.forms"] }).analyze();
+    expect(pageOneResults.violations).toEqual([]);
   });
 });

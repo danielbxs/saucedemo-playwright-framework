@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
+import { test as checka11yTest } from "../fixtures/checka11y";
 
 test.describe("Cart Functionality", () => {
   let pm: PageManager;
@@ -31,5 +32,10 @@ test.describe("Cart Functionality", () => {
     await pm.onCartPage().proceedToCheckout();
     await expect(pm.onCartPage().checkoutButton).toBeDisabled();
     await expect(page).toHaveURL("/cart.html");
+  });
+
+  checka11yTest.fixme("should meet semantics accessibility guidelines", async ({ axe }) => {
+    const semanticsResults = await axe({ extraTags: ["cat.semantics"] }).analyze();
+    expect(semanticsResults.violations).toEqual([]);
   });
 });

@@ -3,5 +3,8 @@
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.2"
   },
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "@axe-core/playwright": "^4.12.1"
+  }
 }

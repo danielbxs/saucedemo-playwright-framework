@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
+import { test as checka11yTest } from "../fixtures/checka11y";
 
 test.describe("Inventory Functionality", () => {
   let pm: PageManager;
@@ -50,5 +51,10 @@ test.describe("Inventory Functionality", () => {
     await expect(pm.onInventoryPage().shoppingCartBadge).not.toBeVisible();
     await expect(pm.onInventoryPage().getAddToCartButton("Sauce Labs Bike Light")).toHaveText("Add to cart");
     await expect(pm.onInventoryPage().getAddToCartButton("Sauce Labs Fleece Jacket")).toHaveText("Add to cart");
+  });
+
+  checka11yTest("should meet color accessibility guidelines", async ({ axe }) => {
+    const colorResults = await axe({ extraTags: ["cat.color"] }).analyze();
+    expect(colorResults.violations).toEqual([]);
   });
 });
