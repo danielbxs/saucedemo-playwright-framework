@@ -1,12 +1,16 @@
 import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { PageManager } from "../pages/PageManager";
+import { test as checka11yTest } from "../fixtures/checka11y";
 import invalidCredentials from "../test-data/invalidCredentials.json";
 import users from "../test-data/users.json";
 
 test.describe("Login Functionality", () => {
   let pm: PageManager;
+  let axeScan: AxeBuilder;
   test.beforeEach(async ({ page }) => {
     pm = new PageManager(page);
+    axeScan = new AxeBuilder({ page });
     await page.goto("/");
   });
 
@@ -60,5 +64,15 @@ test.describe("Login Functionality", () => {
     await expect(pm.onLoginPage().closeErrorButton).toBeEnabled();
     await pm.onLoginPage().closeErrorButton.click();
     await expect(page).toHaveURL("/");
+  });
+
+  checka11yTest("should meet WCAG 2.1 AA accessibility standards", async ({ axe }) => {
+    const wcagResults = await axe().analyze();
+    expect(wcagResults.violations).toEqual([]);
+  });
+
+  checka11yTest.fixme("should meet accessibility best practices", async ({ axe }) => {
+    const bestPracticeResults = await axe({ extraTags: ["best-practice"] }).analyze();
+    expect(bestPracticeResults.violations).toEqual([]);
   });
 });
