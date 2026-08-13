@@ -71,26 +71,46 @@ npx playwright install
 
 ## Running tests
 
-1. Run all tests (headless)
+### 1. Run all tests (headless)
 
 ```bash
-npx playwright test
+npm run test
 ```
 
-2. Run all tests in UI mode
+### 2. Run all tests in UI mode
 
 ```bash
-npx playwright test --ui
+npm run test-ui
 ```
 
-3. Run a specific test file
+### 3. Run specific test files
+
+#### Login
 
 ```bash
-npx playwright test tests/login.spec.ts
+npm run test-login
 ```
 
-4. Generate and view the HTML report
+#### Inventory
 
 ```bash
-npx playwright show-report
+npm run test-inventory
+```
+
+#### Cart
+
+```bash
+npm run test-cart
+```
+
+#### Checkout
+
+```bash
+npm run test-checkout
+```
+
+### 4. View the HTML report (after running tests)
+
+```bash
+npm run report
 ```
