@@ -1,15 +1,6 @@
 import { Page, Locator } from "@playwright/test";
-
-type MenuItem = "All Items" | "About" | "Logout" | "Reset App State";
-type ProductName =
-  | "Sauce Labs Backpack"
-  | "Sauce Labs Bike Light"
-  | "Sauce Labs Bolt T-Shirt"
-  | "Sauce Labs Fleece Jacket"
-  | "Sauce Labs Onesie"
-  | "Test.allTheThings() T-Shirt (Red)";
-type FilterOption = "az" | "za" | "lohi" | "hilo";
-type ProductPosition = 0 | 1 | 2 | 3 | 4 | 5;
+import { MenuItem, ProductName, FilterOption, ProductPosition } from "../lib/types";
+import { formatProductName } from "../lib/utils";
 
 export class InventoryPage {
   readonly page: Page;
@@ -62,21 +53,12 @@ export class InventoryPage {
   }
 
   /**
-   * Formats a product name into a slug that matches the data-test attribute.
-   * @param productName Full product display name e.g., "Sauce Labs Backpack"
-   * @returns Formatted slug e.g., "sauce-labs-backpack"
-   */
-  private formatProductName(productName: ProductName): string {
-    return productName.toLowerCase().split(" ").join("-");
-  }
-
-  /**
    * Selects the "Add to cart" button of a specific product
    * @param productName Full product display name e.g., "Sauce Labs Backpack"
    * @returns A locator pointing to the specific product's add to cart button
    */
   getAddToCartButton(productName: ProductName) {
-    const product = this.formatProductName(productName);
+    const product = formatProductName(productName);
     return this.page.getByTestId(`add-to-cart-${product}`);
   }
 
@@ -85,7 +67,7 @@ export class InventoryPage {
    * @param productName Name of the product to add to the cart
    */
   async addProductToCartByName(productName: ProductName) {
-    const productToBeAdded = this.formatProductName(productName);
+    const productToBeAdded = formatProductName(productName);
     await this.page.getByTestId(`add-to-cart-${productToBeAdded}`).click();
   }
 
@@ -94,7 +76,7 @@ export class InventoryPage {
    * @param productName Name of the product to remove from the cart
    */
   async removeProductFromCartByName(productName: ProductName) {
-    const productToBeRemoved = this.formatProductName(productName);
+    const productToBeRemoved = formatProductName(productName);
     await this.page.getByTestId(`remove-${productToBeRemoved}`).click();
   }
 

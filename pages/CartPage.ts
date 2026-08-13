@@ -1,11 +1,6 @@
 import { Page, Locator } from "@playwright/test";
-type ProductName =
-  | "Sauce Labs Backpack"
-  | "Sauce Labs Bike Light"
-  | "Sauce Labs Bolt T-Shirt"
-  | "Sauce Labs Fleece Jacket"
-  | "Sauce Labs Onesie"
-  | "Test.allTheThings() T-Shirt (Red)";
+import { ProductName } from "../lib/types";
+import { formatProductName } from "../lib/utils";
 
 export class CartPage {
   readonly page: Page;
@@ -29,20 +24,11 @@ export class CartPage {
   }
 
   /**
-   * Formats a product name into a slug that matches the data-test attribute.
-   * @param productName Full product display name e.g., "Sauce Labs Backpack"
-   * @returns Formatted slug e.g., "sauce-labs-backpack"
-   */
-  private formatProductName(productName: ProductName): string {
-    return productName.toLowerCase().split(" ").join("-");
-  }
-
-  /**
    * Removes a specific item from the shopping cart by its product name.
    * @param productName Name of the product to remove from the cart
    */
   async removeProductFromCartByName(productName: ProductName) {
-    const productToBeRemoved = this.formatProductName(productName);
+    const productToBeRemoved = formatProductName(productName);
     await this.page.getByTestId(`remove-${productToBeRemoved}`).click();
   }
   /**
