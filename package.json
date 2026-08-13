@@ -3,7 +3,15 @@
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.2"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test-ui": "npx playwright test --ui",
+    "test-login": "npx playwright test tests/login.spec.ts",
+    "test-inventory": "npx playwright test tests/inventory.spec.ts",
+    "test-cart": "npx playwright test tests/cart.spec.ts",
+    "test-checkout": "npx playwright test tests/checkout.spec.ts",
+    "report": "npx playwright show-report"
+  },
   "dependencies": {
     "@axe-core/playwright": "^4.12.1"
   }
