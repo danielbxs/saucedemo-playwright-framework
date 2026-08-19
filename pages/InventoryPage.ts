@@ -87,17 +87,14 @@ export class InventoryPage {
   async selectFilterOption(filterOption: FilterOption) {
     await this.filterSelect.selectOption(filterOption);
   }
+
   /**
-   * Selects a product from the product list by item position.
-   * @param productPosition position of the product on the list
+   * Gets all the product prices.
+   * @returns an array with all the item prices e.g. ["$7.99", "$9.99", "$15.99"]
    */
-  async getProductPriceFromPosition(productPosition: ProductPosition) {
-    return this.productList
-      .getByTestId("inventory-item")
-      .nth(productPosition)
-      .getByTestId("inventory-item-description")
-      .locator(".pricebar")
-      .getByTestId("inventory-item-price");
+
+  async getProductPrices(): Promise<string[]> {
+    return this.productList.getByTestId("inventory-item").getByTestId("inventory-item-price").allTextContents();
   }
 
   /**

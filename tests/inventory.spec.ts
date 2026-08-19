@@ -1,23 +1,38 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
 import { test as checka11yTest } from "../fixtures/checka11y";
+import { inventoryUrl } from "../lib/constants";
+import { formatPrices } from "../lib/utils";
 
 test.describe("Inventory Functionality", () => {
   let pm: PageManager;
   test.beforeEach(async ({ page }) => {
     pm = new PageManager(page);
-    await page.goto("/inventory.html");
+    await page.goto(inventoryUrl);
   });
 
   test("should display products sorted by price in ascending order", async () => {
     await pm.onInventoryPage().selectFilterOption("lohi");
-    const firstProductPrice = await pm.onInventoryPage().getProductPriceFromPosition(0);
-    await expect(firstProductPrice).toHaveText("$7.99");
+
+    const prices = await pm.onInventoryPage().getProductPrices();
+
+    const numericPrices = formatPrices(prices);
+
+    const sortedPrices = [...numericPrices].sort((a, b) => a - b);
+
+    expect(numericPrices).toEqual(sortedPrices);
   });
+
   test("should display products sorted by price in descending order", async () => {
     await pm.onInventoryPage().selectFilterOption("hilo");
-    const firstProductPrice = await pm.onInventoryPage().getProductPriceFromPosition(0);
-    await expect(firstProductPrice).toHaveText("$49.99");
+
+    const prices = await pm.onInventoryPage().getProductPrices();
+
+    const numericPrices = formatPrices(prices);
+
+    const sortedPrices = [...numericPrices].sort((a, b) => b - a);
+
+    expect(numericPrices).toEqual(sortedPrices);
   });
 
   test("should update the cart badge after adding a product", async () => {

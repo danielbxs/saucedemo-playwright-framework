@@ -1,11 +1,12 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
 import { test as checka11yTest } from "../fixtures/checka11y";
+import { inventoryUrl } from "../lib/constants";
 
 test.describe("Cart Functionality", () => {
   let pm: PageManager;
   test.beforeEach(async ({ page }) => {
-    await page.goto("/inventory.html");
+    await page.goto(inventoryUrl);
     pm = new PageManager(page);
     await pm.onInventoryPage().addProductToCartByName("Sauce Labs Backpack");
     await pm.onInventoryPage().addProductToCartByName("Sauce Labs Onesie");
