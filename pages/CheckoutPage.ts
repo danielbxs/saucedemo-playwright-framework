@@ -56,6 +56,13 @@ export class CheckoutPage {
     await this.continueButton.click();
   }
   /**
+   * Clicks the cancel button on step one of the checkout process.
+   */
+  async cancelCheckout() {
+    await this.cancelButton.click();
+  }
+
+  /**
    * Clicks the button to close the error message popup.
    */
   async closeErrorMessage() {

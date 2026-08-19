@@ -1,5 +1,96 @@
-[
-  { "firstName": "", "lastName": "Joe", "zipCode": "3941004", "errorMessage": "Error: First Name is required" },
-  { "firstName": "Zoe", "lastName": "", "zipCode": "6541984", "errorMessage": "Error: Last Name is required" },
-  { "firstName": "Jane", "lastName": "Carlton", "zipCode": "", "errorMessage": "Error: Postal Code is required" }
-]
+{
+  "missing": [
+    { "field": "First Name", "firstName": "", "lastName": "Joe", "zipCode": "3941004", "errorMessage": "Error: First Name is required" },
+    { "field": "Last Name", "firstName": "Zoe", "lastName": "", "zipCode": "6541984", "errorMessage": "Error: Last Name is required" },
+    {
+      "field": "Postal/ZIP Code",
+      "firstName": "Jane",
+      "lastName": "Carlton",
+      "zipCode": "",
+      "errorMessage": "Error: Postal Code is required"
+    }
+  ],
+  "numeric": [
+    {
+      "field": "First Name",
+      "firstName": "312654984",
+      "lastName": "Smith",
+      "zipCode": "123456",
+      "errorMessage": "Error: First Name only accepts letters (a-z), (A-Z)"
+    },
+    {
+      "field": "Last Name",
+      "firstName": "Kyle",
+      "lastName": "6515444396",
+      "zipCode": "321654",
+      "errorMessage": "Error: Last Name only accepts letters (a-z), (A-Z)"
+    }
+  ],
+  "special": [
+    {
+      "field": "First Name",
+      "firstName": "!--+!#@#!@@**",
+      "lastName": "Stone",
+      "zipCode": "123456",
+      "errorMessage": "Error: First Name only accepts letters (a-z), (A-Z)"
+    },
+    {
+      "field": "Last Name",
+      "firstName": "!--+!#@#!@@**",
+      "lastName": "**!@!!!&¨##$",
+      "zipCode": "1230494",
+      "errorMessage": "Error: Last Name only accepts letters (a-z), (A-Z)"
+    },
+    {
+      "field": "Postal/ZIP Code",
+      "firstName": "Peter",
+      "lastName": "Johnson",
+      "zipCode": "!-+++-!@**#!$()",
+      "errorMessage": "Error: Postal Code only accepts numbers (0-9)"
+    }
+  ],
+  "boundary": [
+    {
+      "field": "First Name (1 character)",
+      "firstName": "a",
+      "lastName": "Brown",
+      "zipCode": "123456",
+      "errorMessage": "Error: First Name should be at least 2 characters long"
+    },
+    {
+      "field": "First Name (50+ characters)",
+      "firstName": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
+      "lastName": "Turner",
+      "zipCode": "1492481",
+      "errorMessage": "Error: First Name should be at most 50 characters"
+    },
+    {
+      "field": "Last Name (1 character)",
+      "firstName": "Ashley",
+      "lastName": "D",
+      "zipCode": "123456",
+      "errorMessage": "Error: Last Name should be at least 2 characters long"
+    },
+    {
+      "field": "Last Name (50+ characters)",
+      "firstName": "Tina",
+      "lastName": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
+      "zipCode": "1492481",
+      "errorMessage": "Error: Last Name should be at most 50 characters long"
+    },
+    {
+      "field": "Postal/ZIP Code (1 character)",
+      "firstName": "Avery",
+      "lastName": "Brown",
+      "zipCode": "1",
+      "errorMessage": "Error: Postal Code should be at least 5 characters long"
+    },
+    {
+      "field": "Postal/ZIP Code (15+ character)",
+      "firstName": "Bruce",
+      "lastName": "Turner",
+      "zipCode": "1234567890123450",
+      "errorMessage": "Error: Postal Code should be at most 15 characters long"
+    }
+  ]
+}
