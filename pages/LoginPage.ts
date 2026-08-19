@@ -28,4 +28,19 @@ export class LoginPage {
     await this.passwordField.fill(password);
     await this.loginButton.click();
   }
+  // /**
+  //  * Fills the username field on the login page
+  //  * @param username a username string
+  //  */
+  // async fillUsername(username: string) {
+  //   await this.usernameField.fill(username);
+  // }
+
+  // /**
+  //  * Fills the password field on the login page
+  //  * @param password a password string
+  //  */
+  // async fillPassword(password: string) {
+  //   await this.passwordField.fill(password);
+  // }
 }

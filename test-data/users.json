@@ -1,9 +1,79 @@
 {
-  "standard": { "username": "standard_user", "password": "secret_sauce" },
-  "locked": { "username": "locked_out_user", "password": "secret_sauce" },
-  "problem": { "username": "problem_user", "password": "secret_sauce" },
-  "performance": { "username": "performance_glitch_user", "password": "secret_sauce" },
-  "error": { "username": "error_user", "password": "secret_sauce" },
-  "visual": { "username": "visual_user", "password": "secret_sauce" },
-  "injection": { "username": "<script>alert(1)</script>", "password": "console.error('error')" }
+  "valid": [
+    { "username": "standard_user", "password": "secret_sauce" },
+    { "username": "problem_user", "password": "secret_sauce" },
+    { "username": "performance_glitch_user", "password": "secret_sauce" },
+    { "username": "error_user", "password": "secret_sauce" },
+    { "username": "visual_user", "password": "secret_sauce" }
+  ],
+
+  "locked": {
+    "username": "locked_out_user",
+    "password": "secret_sauce",
+    "errorMessage": "Epic sadface: Sorry, this user has been locked out."
+  },
+
+  "injection": {
+    "username": "<script>alert(1)</script>",
+    "password": "console.error('error')",
+    "errorMessage": "Error: Invalid credentials are not allowed"
+  },
+
+  "invalid": [
+    {
+      "username": "standard_user",
+      "password": "aosdm3920",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
+    },
+    {
+      "username": "locked_out_user",
+      "password": "scrg4d1",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
+    },
+    {
+      "username": "performance_glitch_user",
+      "password": "123546",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
+    },
+    {
+      "username": "error_user",
+      "password": "321123",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
+    },
+    {
+      "username": "visual_user",
+      "password": "acghyj3567",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
+    }
+  ],
+  "negative": [
+    { "username": "     ", "password": "dmd9fn3iqask0", "errorMessage": "Error: Username should only contain letters and numbers" },
+    { "username": "🫡😯😎😁🤣👍😊", "password": "password123", "errorMessage": "Error: Username should only contain letters and numbers" }
+  ],
+  "boundary": [
+    {
+      "field": "Username (1 character)",
+      "username": "a",
+      "password": "secret_sauce",
+      "errorMessage": "Error: Username should be at least 6 characters"
+    },
+    {
+      "field": "Username (50+ characters)",
+      "username": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
+      "password": "secret_sauce",
+      "errorMessage": "Error: Username should be at most 50 characters"
+    },
+    {
+      "field": "Password (1 character)",
+      "username": "standard_user",
+      "password": "d",
+      "errorMessage": "Error: Password should be at least 6 characters"
+    },
+    {
+      "field": "Password (50+ characters)",
+      "username": "standard_user",
+      "password": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
+      "errorMessage": "Error: Password should be at most 50 characters"
+    }
+  ]
 }
