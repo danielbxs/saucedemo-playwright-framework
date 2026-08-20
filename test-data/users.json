@@ -48,7 +48,15 @@
   ],
   "negative": [
     { "username": "     ", "password": "dmd9fn3iqask0", "errorMessage": "Error: Username should only contain letters and numbers" },
-    { "username": "🫡😯😎😁🤣👍😊", "password": "password123", "errorMessage": "Error: Username should only contain letters and numbers" }
+    { "username": "ɇɇʬʬ♥▀█", "password": "dmd9fn3iqask0", "errorMessage": "Error: Username should only contain letters and numbers" },
+    { "username": "🫡😯😎😁🤣👍😊", "password": "password123", "errorMessage": "Error: Username should only contain letters and numbers" },
+    { "username": "user3819", "password": "    ", "errorMessage": "Error: Password should only contain letters, numbers, and symbols" },
+    {
+      "username": "user49201",
+      "password": "😊👍🎶😃😎😊😉😆",
+      "errorMessage": "Error: Password should only contain letters, numbers, and symbols"
+    },
+    { "username": "user43451", "password": "♫‼╬▲§¶þ▀", "errorMessage": "Error: Password should only contain letters, numbers, and symbols" }
   ],
   "boundary": [
     {

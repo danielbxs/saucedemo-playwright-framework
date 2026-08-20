@@ -133,7 +133,12 @@ test.describe("Checkout Functionality", () => {
     await page.goto(checkoutStepTwoUrl);
     await expect(page).toHaveURL(checkoutStepOneRegExp);
   });
-  test.fixme("should be redirected back to inventory when navigating directly to checkout complete page", async ({ page }) => {
+  test.fixme("should be redirected back to inventory when navigating directly to checkout complete page with an empty cart", async ({
+    page,
+  }) => {
+    await pm.onCheckoutPage().cancelCheckout();
+    await pm.onCartPage().removeProductFromCartByName("Sauce Labs Fleece Jacket");
+    await pm.onCartPage().removeProductFromCartByName("Sauce Labs Onesie");
     await page.goto(checkoutCompleteUrl);
     await expect(page).toHaveURL(inventoryRegExp);
   });
