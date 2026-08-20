@@ -32,10 +32,20 @@ This test suite covers the main user flows across the application lifecycle:
 
 This project follows professional QA practices by writing tests against expected specifications. Identified application bugs are actively managed using Playwright's `test.fixme()` status to ensure continuous integration (CI) pipelines stay green while tracking broken features.
 
-| Spec                | Known Issue / Description                                                                                                                                            | Status                    |
-| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ |
-| `inventory.spec.ts` | **Reset App State:** Clears cart badge storage state but fails to re-render "Remove" buttons back to "Add to cart" in the DOM.                                       | 🟡 `Skipped (test.fixme)` |
-| `cart.spec.ts`      | **Empty Cart Checkout:** Allows users to proceed to Checkout Step One with 0 items in the cart without disabling the checkout button or displaying an error message. | 🟡 `Skipped (test.fixme)` |
+| Spec                | Known Issue / Description                                                                                                                                                                      | Status                    |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ |
+| `login.spec.ts`     | **Injection Strings:** Accepts injection scripts on inputs, does not sanitize inputs, and does not display an adequate error message                                                           | 🟡 `Skipped (test.fixme)` |
+| `login.spec.ts`     | **Negative Tests:** Allows blank spaces, emojis, and unicodes to be used in login fields. Incorrect error message is shown                                                                     | 🟡 `Skipped (test.fixme)` |
+| `login.spec.ts`     | **Boundary Tests:** Allows unlimited characters in login fields (observed behavior), no error message is shown                                                                                 | 🟡 `Skipped (test.fixme)` |
+| `login.spec.ts`     | **Accessibility Best Practices:** Fails to meet accessbility best practices                                                                                                                    | 🟡 `Skipped (test.fixme)` |
+| `inventory.spec.ts` | **Reset App State:** Clears cart badge storage state but fails to re-render "Remove" buttons back to "Add to cart" in the DOM                                                                  | 🟡 `Skipped (test.fixme)` |
+| `cart.spec.ts`      | **Empty Cart Checkout:** Allows users to proceed to Checkout Step One with 0 items in the cart without disabling the checkout button or displaying an error message                            | 🟡 `Skipped (test.fixme)` |
+| `cart.spec.ts`      | **Semantics Accessibility Guidelines:** Contains violations due to not using semantic HTML                                                                                                     | 🟡 `Skipped (test.fixme)` |
+| `checkout.spec.ts`  | **Numbers in Checkout Fields:** Allows numbers to be provided in first and last name checkout inputs. No error message is shown                                                                | 🟡 `Skipped (test.fixme)` |
+| `checkout.spec.ts`  | **Special Characters in Checkout Fields:** Allows special characters to be provided in first name, last name, and zipcode checkout fields. No error message is shown                           | 🟡 `Skipped (test.fixme)` |
+| `checkout.spec.ts`  | **Direct Navigation to Step Two:** Allows the user to navigate directly to the second phase of checkout. No redirection or error page is triggered                                             | 🟡 `Skipped (test.fixme)` |
+| `checkout.spec.ts`  | **Directly Completing Checkout With Empty Cart:** Allows the user to navigate directly to the checkout complete page, even when the cart is emptied. No redirection or error page is triggered | 🟡 `Skipped (test.fixme)` |
+| `checkout.spec.ts`  | **Boundary Tests:** Allows unlimited characters in checkout fields (observed behavior), no error message is shown                                                                              | 🟡 `Skipped (test.fixme)` |
 
 ---
 
