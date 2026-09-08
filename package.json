@@ -1,7 +1,11 @@
 {
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.0",
-    "@types/node": "^26.1.2"
+    "@types/node": "^26.1.2",
+    "eslint": "^10.10.0",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.70.0"
   },
   "scripts": {
     "test": "npx playwright test",
@@ -10,7 +14,10 @@
     "test-inventory": "npx playwright test tests/inventory.spec.ts",
     "test-cart": "npx playwright test tests/cart.spec.ts",
     "test-checkout": "npx playwright test tests/checkout.spec.ts",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.12.1"

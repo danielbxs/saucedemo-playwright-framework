@@ -1,5 +1,5 @@
 import { Page, Locator } from "@playwright/test";
-import { MenuItem, ProductName, FilterOption, ProductPosition } from "../lib/types";
+import { MenuItem, ProductName, FilterOption } from "../lib/types";
 import { formatProductName } from "../lib/utils";
 
 export class InventoryPage {
@@ -94,7 +94,10 @@ export class InventoryPage {
    */
 
   async getProductPrices(): Promise<string[]> {
-    return this.productList.getByTestId("inventory-item").getByTestId("inventory-item-price").allTextContents();
+    return this.productList
+      .getByTestId("inventory-item")
+      .getByTestId("inventory-item-price")
+      .allTextContents();
   }
 
   /**

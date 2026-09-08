@@ -14,13 +14,19 @@ test.describe("Cart Functionality", () => {
   });
 
   test("should contain the correct items added to the cart", async () => {
-    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Backpack")).toBeVisible();
-    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Onesie")).toBeVisible();
+    await expect(
+      pm.onCartPage().getCartItemByName("Sauce Labs Backpack"),
+    ).toBeVisible();
+    await expect(
+      pm.onCartPage().getCartItemByName("Sauce Labs Onesie"),
+    ).toBeVisible();
   });
 
   test("should remove item from cart when remove button is clicked", async () => {
     await pm.onCartPage().removeProductFromCartByName("Sauce Labs Onesie");
-    await expect(pm.onCartPage().getCartItemByName("Sauce Labs Onesie")).not.toBeVisible();
+    await expect(
+      pm.onCartPage().getCartItemByName("Sauce Labs Onesie"),
+    ).not.toBeVisible();
   });
 
   test("should be empty when all items are removed", async () => {
@@ -29,14 +35,19 @@ test.describe("Cart Functionality", () => {
     await expect(pm.onCartPage().getCartItems()).toHaveCount(0);
   });
 
-  test.fixme("should not be able to checkout with an empty cart", async ({ page }) => {
+  test.skip("should not be able to checkout with an empty cart", async ({
+    page,
+  }) => {
     await pm.onCartPage().proceedToCheckout();
     await expect(pm.onCartPage().checkoutButton).toBeDisabled();
     await expect(page).toHaveURL("/cart.html");
   });
 
-  checka11yTest.fixme("should meet semantics accessibility guidelines", async ({ axe }) => {
-    const semanticsResults = await axe({ extraTags: ["cat.semantics"] }).analyze();
-    expect(semanticsResults.violations).toEqual([]);
-  });
+  checka11yTest.fail(
+    "should meet semantics accessibility guidelines",
+    async ({ axe }) => {
+      const semanticsResults = await axe({ extraTags: ["cat.semantics"] }).analyze();
+      expect(semanticsResults.violations).toEqual([]);
+    },
+  );
 });

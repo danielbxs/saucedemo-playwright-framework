@@ -1,7 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pages/PageManager";
 import { test as checka11yTest } from "../fixtures/checka11y";
-import { valid, locked, injection, invalid, negative, boundary } from "../test-data/users.json";
+import {
+  valid,
+  locked,
+  injection,
+  invalid,
+  negative,
+  boundary,
+} from "../test-data/users.json";
 import { inventoryRegExp } from "../lib/constants";
 
 test.describe("Login Functionality", () => {
@@ -26,7 +33,9 @@ test.describe("Login Functionality", () => {
   });
 
   invalid.forEach(({ username, password, errorMessage }) => {
-    test(`should display an error message when providing invalid credentials for ${username}`, async ({ page }) => {
+    test(`should display an error message when providing invalid credentials for ${username}`, async ({
+      page,
+    }) => {
       await pm.onLoginPage().logIn(username, password);
       await expect(pm.onLoginPage().errorMessage).toBeVisible();
       await expect(pm.onLoginPage().errorMessage).toHaveText(errorMessage);
@@ -39,7 +48,9 @@ test.describe("Login Functionality", () => {
   test("should display an error message when username is empty", async ({ page }) => {
     await pm.onLoginPage().logIn("", valid[0].password);
     await expect(pm.onLoginPage().errorMessage).toBeVisible();
-    await expect(pm.onLoginPage().errorMessage).toHaveText("Epic sadface: Username is required");
+    await expect(pm.onLoginPage().errorMessage).toHaveText(
+      "Epic sadface: Username is required",
+    );
     await expect(pm.onLoginPage().closeErrorButton).toBeEnabled();
     await pm.onLoginPage().closeErrorButton.click();
     await expect(page).toHaveURL("/");
@@ -48,23 +59,35 @@ test.describe("Login Functionality", () => {
   test("should display an error message when password is empty", async ({ page }) => {
     await pm.onLoginPage().logIn(valid[0].username, "");
     await expect(pm.onLoginPage().errorMessage).toBeVisible();
-    await expect(pm.onLoginPage().errorMessage).toHaveText("Epic sadface: Password is required");
+    await expect(pm.onLoginPage().errorMessage).toHaveText(
+      "Epic sadface: Password is required",
+    );
     await expect(pm.onLoginPage().closeErrorButton).toBeEnabled();
     await pm.onLoginPage().closeErrorButton.click();
     await expect(page).toHaveURL("/");
   });
 
-  test.fixme("should display an error message when injections are input into login fields", async ({ page }) => {
+  test("should reject script-like invalid credentials without executing them", async ({
+    page,
+  }) => {
+    let dialogOpened = false;
+
+    page.on("dialog", async (dialog) => {
+      dialogOpened = true;
+      await dialog.dismiss();
+    });
+
     await pm.onLoginPage().logIn(injection.username, injection.password);
     await expect(pm.onLoginPage().errorMessage).toBeVisible();
     await expect(pm.onLoginPage().errorMessage).toHaveText(injection.errorMessage);
     await expect(pm.onLoginPage().closeErrorButton).toBeEnabled();
     await pm.onLoginPage().closeErrorButton.click();
+    expect(dialogOpened).toBe(false);
     await expect(page).toHaveURL("/");
   });
 
-  negative.forEach(({ username, password, errorMessage }) => {
-    test.fixme(`negative tests ${username}`, async ({ page }) => {
+  negative.forEach(({ username, password, errorMessage, label }) => {
+    test(`should reject ${label}`, async ({ page }) => {
       await pm.onLoginPage().logIn(username, password);
       await expect(pm.onLoginPage().errorMessage).toBeVisible();
       await expect(pm.onLoginPage().errorMessage).toHaveText(errorMessage);
@@ -75,7 +98,7 @@ test.describe("Login Functionality", () => {
   });
 
   boundary.forEach(({ field, username, password, errorMessage }) => {
-    test.fixme(`should validate field lengths for ${field}`, async ({ page }) => {
+    test(`should reject invalid credentials with ${field}`, async ({ page }) => {
       await pm.onLoginPage().logIn(username, password);
       await expect(pm.onLoginPage().errorMessage).toBeVisible();
       await expect(pm.onLoginPage().errorMessage).toHaveText(errorMessage);
@@ -90,7 +113,7 @@ test.describe("Login Functionality", () => {
     expect(wcagResults.violations).toEqual([]);
   });
 
-  checka11yTest.fixme("should meet accessibility best practices", async ({ axe }) => {
+  checka11yTest.fail("should meet accessibility best practices", async ({ axe }) => {
     const bestPracticeResults = await axe({ extraTags: ["best-practice"] }).analyze();
     expect(bestPracticeResults.violations).toEqual([]);
   });

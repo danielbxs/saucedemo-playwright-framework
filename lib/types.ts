@@ -8,4 +8,3 @@ export type ProductName =
 
 export type MenuItem = "All Items" | "About" | "Logout" | "Reset App State";
 export type FilterOption = "az" | "za" | "lohi" | "hilo";
-export type ProductPosition = 0 | 1 | 2 | 3 | 4 | 5;

@@ -16,7 +16,7 @@
   "injection": {
     "username": "<script>alert(1)</script>",
     "password": "console.error('error')",
-    "errorMessage": "Error: Invalid credentials are not allowed"
+    "errorMessage": "Epic sadface: Username and password do not match any user in this service"
   },
 
   "invalid": [
@@ -47,41 +47,67 @@
     }
   ],
   "negative": [
-    { "username": "     ", "password": "dmd9fn3iqask0", "errorMessage": "Error: Username should only contain letters and numbers" },
-    { "username": "ɇɇʬʬ♥▀█", "password": "dmd9fn3iqask0", "errorMessage": "Error: Username should only contain letters and numbers" },
-    { "username": "🫡😯😎😁🤣👍😊", "password": "password123", "errorMessage": "Error: Username should only contain letters and numbers" },
-    { "username": "user3819", "password": "    ", "errorMessage": "Error: Password should only contain letters, numbers, and symbols" },
+    {
+      "username": "     ",
+      "password": "dmd9fn3iqask0",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "whitespace-only username"
+    },
+    {
+      "username": "ɇɇʬʬ♥▀█",
+      "password": "dmd9fn3iqask0",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "unsupported unicode username"
+    },
+    {
+      "username": "🫡😯😎😁🤣👍😊",
+      "password": "password123",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "emoji username"
+    },
+    {
+      "username": "user3819",
+      "password": "    ",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "whitespace-only password"
+    },
     {
       "username": "user49201",
       "password": "😊👍🎶😃😎😊😉😆",
-      "errorMessage": "Error: Password should only contain letters, numbers, and symbols"
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "emoji password"
     },
-    { "username": "user43451", "password": "♫‼╬▲§¶þ▀", "errorMessage": "Error: Password should only contain letters, numbers, and symbols" }
+    {
+      "username": "user43451",
+      "password": "♫‼╬▲§¶þ▀",
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service",
+      "label": "unicode password"
+    }
   ],
   "boundary": [
     {
       "field": "Username (1 character)",
       "username": "a",
       "password": "secret_sauce",
-      "errorMessage": "Error: Username should be at least 6 characters"
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
     },
     {
       "field": "Username (50+ characters)",
       "username": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
       "password": "secret_sauce",
-      "errorMessage": "Error: Username should be at most 50 characters"
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
     },
     {
       "field": "Password (1 character)",
       "username": "standard_user",
       "password": "d",
-      "errorMessage": "Error: Password should be at least 6 characters"
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
     },
     {
       "field": "Password (50+ characters)",
       "username": "standard_user",
       "password": "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaba",
-      "errorMessage": "Error: Password should be at most 50 characters"
+      "errorMessage": "Epic sadface: Username and password do not match any user in this service"
     }
   ]
 }

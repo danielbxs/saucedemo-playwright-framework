@@ -2,15 +2,17 @@
 
 # Saucedemo Playwright Automation Framework (Playwright & TypeScript)
 
-This is an automated end-to-end testing suite built with **Playwright** and **TypeScript** using the **Page Object Model (POM)** pattern. This repository validates all functionalities of the e-commerce process and checkout financial calculation accuracy on the [Swag Labs (Saucedemo)](https://www.saucedemo.com/) application.
+This is an automated end-to-end testing suite built with **Playwright** and **TypeScript** using the **Page Object Model (POM)** pattern. This repository validates critical e-commerce workflows, including authentication, inventory management, cart operations, checkout, order totals, and accessibility checks on the [Swag Labs (Saucedemo)](https://www.saucedemo.com/) application.
 
 ---
 
 ## Technologies Used
 
-- **Framework:** [Playwright Test](https://playwright.dev/)
+- **Testing Framework:** [Playwright Test](https://playwright.dev/)
+- **Accessibility:** [axe-core](https://github.com/dequelabs/axe-core)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **CI/CD:** GitHub Actions
+- **Linter:** [ESLint](https://eslint.org/)
+- **CI/CD:** [GitHub Actions](https://github.com/features/actions)
 
 ---
 
@@ -18,34 +20,72 @@ This is an automated end-to-end testing suite built with **Playwright** and **Ty
 
 This test suite covers the main user flows across the application lifecycle:
 
-- **Authentication (`/`):** Validates login functionality, credential handling, and testing fields against invalid inputs, special characters, and script injection attempts.
+- **Authentication (`/`):** Validates successful and unsuccessful login attempts, locked-user behavior, required fields, unusual credential inputs, boundary inputs, and script-like input handling.
 - **Inventory (`/inventory.html`):** Exercises product selection, menu interactions, and application state resets.
-- **Shopping Cart (`/cart.html`):** Tests cart persistence and edge cases like proceeding to checkout with an empty cart.
+- **Shopping Cart (`/cart.html`):** Validates cart contents, product removal, empty-cart behavior, and the checkout entry point.
 - **Checkout Workflows (`/checkout-step-one.html` & `/checkout-step-two.html`):**
   - Form validation and required field warnings.
   - Precise verification of subtotal, tax, and order totals.
-- **Order Completion (`/checkout-complete.html`):** Verification of the checkout process completeness, state teardown and redirection to the store front.
+- **Order Completion (`/checkout-complete.html`):** Verifies order confirmation and navigation back to the inventory page.
 
 ---
 
-## Known Issues
+## Framework design
 
-This project follows professional QA practices by writing tests against expected specifications. Identified application bugs are actively managed using Playwright's `test.fixme()` status to ensure continuous integration (CI) pipelines stay green while tracking broken features.
+| Component             | Responsibility                                                          |
+| --------------------- | ----------------------------------------------------------------------- |
+| Page Objects          | Encapsulate page locators and reusable user actions                     |
+| Page Manager          | Provides centralized access to the page objects                         |
+| JSON test data        | Separates credential and checkout variations from test logic            |
+| Authentication setup  | Creates reusable browser storage state for authenticated tests          |
+| Accessibility fixture | Configures reusable Axe checks for WCAG 2.1 AA                          |
+| Playwright projects   | Separate logged-out and authenticated tests across Chromium and Firefox |
 
-| Spec                | Known Issue / Description                                                                                                                                                                      | Status                    |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ |
-| `login.spec.ts`     | **Injection Strings:** Accepts injection scripts on inputs, does not sanitize inputs, and does not display an adequate error message                                                           | 🟡 `Skipped (test.fixme)` |
-| `login.spec.ts`     | **Negative Tests:** Allows blank spaces, emojis, and unicodes to be used in login fields. Incorrect error message is shown                                                                     | 🟡 `Skipped (test.fixme)` |
-| `login.spec.ts`     | **Boundary Tests:** Allows unlimited characters in login fields (observed behavior), no error message is shown                                                                                 | 🟡 `Skipped (test.fixme)` |
-| `login.spec.ts`     | **Accessibility Best Practices:** Fails to meet accessbility best practices                                                                                                                    | 🟡 `Skipped (test.fixme)` |
-| `inventory.spec.ts` | **Reset App State:** Clears cart badge storage state but fails to re-render "Remove" buttons back to "Add to cart" in the DOM                                                                  | 🟡 `Skipped (test.fixme)` |
-| `cart.spec.ts`      | **Empty Cart Checkout:** Allows users to proceed to Checkout Step One with 0 items in the cart without disabling the checkout button or displaying an error message                            | 🟡 `Skipped (test.fixme)` |
-| `cart.spec.ts`      | **Semantics Accessibility Guidelines:** Contains violations due to not using semantic HTML                                                                                                     | 🟡 `Skipped (test.fixme)` |
-| `checkout.spec.ts`  | **Numbers in Checkout Fields:** Allows numbers to be provided in first and last name checkout inputs. No error message is shown                                                                | 🟡 `Skipped (test.fixme)` |
-| `checkout.spec.ts`  | **Special Characters in Checkout Fields:** Allows special characters to be provided in first name, last name, and zipcode checkout fields. No error message is shown                           | 🟡 `Skipped (test.fixme)` |
-| `checkout.spec.ts`  | **Direct Navigation to Step Two:** Allows the user to navigate directly to the second phase of checkout. No redirection or error page is triggered                                             | 🟡 `Skipped (test.fixme)` |
-| `checkout.spec.ts`  | **Directly Completing Checkout With Empty Cart:** Allows the user to navigate directly to the checkout complete page, even when the cart is emptied. No redirection or error page is triggered | 🟡 `Skipped (test.fixme)` |
-| `checkout.spec.ts`  | **Boundary Tests:** Allows unlimited characters in checkout fields (observed behavior), no error message is shown                                                                              | 🟡 `Skipped (test.fixme)` |
+Authenticated projects depend on a setup project that logs in once and saves the storage state. Login tests use an empty storage state so authentication behavior is tested independently.
+
+---
+
+## Known failures and scope decisions
+
+The suite uses Playwright annotations according to the reason a scenario cannot pass normally:
+
+- `test.fail()` identifies a reproducible known failure. The test still executes, collects evidence, and reports an unexpected pass if the behavior is fixed.
+- `test.skip()` identifies a scenario that is not currently enforceable because the expected behavior is not documented.
+- `test.fixme()` is reserved for tests that cannot execute because the test implementation or supporting framework requires repair. No current tests use this annotation.
+
+### Expected failures
+
+| Area                | Finding                                                                                          | Treatment     |
+| ------------------- | ------------------------------------------------------------------------------------------------ | ------------- |
+| Login accessibility | Automated analysis identifies accessibility best-practice violations                             | `test.fail()` |
+| Inventory reset     | Reset App State clears the cart badge but does not update the product buttons in the current DOM | `test.fail()` |
+| Cart accessibility  | Automated analysis identifies semantic HTML violations                                           | `test.fail()` |
+
+### Skipped requirement-dependent scenarios
+
+| Area                       | Scenarios                                                  | Reason                                         |
+| -------------------------- | ---------------------------------------------------------- | ---------------------------------------------- |
+| Empty-cart checkout        | Preventing checkout when the cart contains no products     | Expected behavior is not documented            |
+| Checkout field validation  | Numeric, special-character, and field-length restrictions  | Accepted formats and limits are not documented |
+| Direct checkout navigation | Redirecting users who access later checkout pages directly | Navigation restrictions are not documented     |
+
+These scenarios are preserved as potential requirements and are not presented as confirmed application defects.
+
+---
+
+## CI pipeline
+
+GitHub Actions runs the workflow on every push and pull request targeting `main`.
+
+The pipeline:
+
+1. Installs dependencies using `npm ci`.
+2. Runs strict TypeScript type checking.
+3. Runs ESLint.
+4. Executes the tests in separate Chromium and Firefox matrix jobs.
+5. Uploads a browser-specific HTML report for 30 days, including available failure diagnostics.
+
+In CI, failed tests are retried twice with one worker for more stable execution. Playwright retains a trace on the first retry, screenshots on failure, and videos for failed tests.
 
 ---
 
@@ -55,7 +95,7 @@ This project follows professional QA practices by writing tests against expected
 
 Ensure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Node.js](https://nodejs.org/) (v20 or higher)
 - [npm](https://www.npmjs.com/)
 
 ### Installation
