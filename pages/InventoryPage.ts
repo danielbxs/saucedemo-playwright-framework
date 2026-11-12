@@ -34,12 +34,13 @@ export class InventoryPage {
   }
 
   /**
-   * Private helper that generates a locator for a side menu link.
-   * @param menuItemName The text of the menu item link to target
+   * Private helper that generates a locator for a side menu item.
+   * @param menuItemName The accessible name of the menu item to target
    * @returns Locator pointing to the menu item
    */
   private selectMenuItem(menuItemName: MenuItem) {
-    return this.page.getByRole("link", { name: menuItemName });
+    const role = menuItemName === "About" ? "link" : "button";
+    return this.page.getByRole(role, { name: menuItemName, exact: true });
   }
 
   /**
