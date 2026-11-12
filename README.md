@@ -35,13 +35,15 @@ This test suite covers the main user flows across the application lifecycle:
 | Component             | Responsibility                                                          |
 | --------------------- | ----------------------------------------------------------------------- |
 | Page Objects          | Encapsulate page locators and reusable user actions                     |
-| Page Manager          | Provides centralized access to the page objects                         |
+| Page fixtures         | Provide `loginPage`, `inventoryPage`, `cartPage`, and `checkoutPage` directly to tests |
 | JSON test data        | Separates credential and checkout variations from test logic            |
 | Authentication setup  | Creates reusable browser storage state for authenticated tests          |
 | Accessibility fixture | Configures reusable Axe checks for WCAG 2.1 AA                          |
 | Playwright projects   | Separate logged-out and authenticated tests across Chromium and Firefox |
 
 Authenticated projects depend on a setup project that logs in once and saves the storage state. Login tests use an empty storage state so authentication behavior is tested independently.
+
+Tests import `test` from `fixtures/PageFixtures.ts` and request only the page objects they need through fixture parameters. Suites with accessibility checks combine the page fixtures with `fixtures/checka11y.ts` using Playwright's `mergeTests`.
 
 ---
 
